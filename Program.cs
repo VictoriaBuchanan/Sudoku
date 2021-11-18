@@ -53,7 +53,23 @@ public class Program
         }
         return position;
     }
-
+    public static int getBoxCoordinate(int coordinate)
+    {
+        int remainder = coordinate/3;
+        
+        if(remainder == 0)
+        {
+            return 0;
+        }
+        else if (remainder == 1)
+        {
+            return 3;
+        }
+        else 
+        {
+            return 6;
+        }
+    }
     static void printBoard(int[,] sudokuBoard){
         Console.WriteLine("-------------------------------------------------------");
         for(int i =0; i<9; i++){
@@ -101,24 +117,6 @@ public class Program
 
         // Returns true if the number passes all the tests
         return true;
-    }
-
-    public static int getBoxCoordinate(int coordinate)
-    {
-        int remainder = coordinate/3;
-        
-        if(remainder == 0)
-        {
-            return 0;
-        }
-        else if (remainder == 1)
-        {
-            return 3;
-        }
-        else 
-        {
-            return 6;
-        }
     }
 
     public static bool solver()
