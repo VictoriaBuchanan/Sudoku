@@ -77,8 +77,37 @@ public class Program
             Console.WriteLine("-------------------------------------------------------");
         }          
     }
+    public static bool solver()
+    {
+        int[] first_empty_cell = Program.findsEmptyCell(sudokuBoard);
 
+        if(first_empty_cell[0] == -1)
+        {
+            Program.printBoard(sudokuBoard);
+            return true;
+        }
+        
+        for(int i = 1; i < 10 ; i++)
+        {
+            if(validAnswer(i, first_empty_cell[0], first_empty_cell[1], sudokuBoard))
+            {
+                sudokuBoard[first_empty_cell[0],first_empty_cell[1]] = i;
 
+                if (solver())
+                {
+                    Program.printBoard(sudokuBoard);
+                    return true;
+                } 
+                else 
+                {
+                   sudokuBoard[first_empty_cell[0],first_empty_cell[1]] = 0; 
+                }
+            }
+        }
+
+        // Returns false if nothing yields an acceptable answer
+        return false;
+    }
 
     public static bool validAnswer(int answer, int row, int col, int[,] sudokuBoard)
     {
@@ -117,37 +146,5 @@ public class Program
 
         // Returns true if the number passes all the tests
         return true;
-    }
-
-    public static bool solver()
-    {
-        int[] first_empty_cell = Program.findsEmptyCell(sudokuBoard);
-
-        if(first_empty_cell[0] == -1)
-        {
-            Program.printBoard(sudokuBoard);
-            return true;
-        }
-        
-        for(int i = 1; i < 10 ; i++)
-        {
-            if(validAnswer(i, first_empty_cell[0], first_empty_cell[1], sudokuBoard))
-            {
-                sudokuBoard[first_empty_cell[0],first_empty_cell[1]] = i;
-
-                if (solver())
-                {
-                    Program.printBoard(sudokuBoard);
-                    return true;
-                } 
-                else 
-                {
-                   sudokuBoard[first_empty_cell[0],first_empty_cell[1]] = 0; 
-                }
-            }
-        }
-
-        // Returns false if nothing yields an acceptable answer
-        return false;
     }
 }
