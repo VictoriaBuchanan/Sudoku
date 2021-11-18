@@ -1,6 +1,6 @@
 ﻿using System;
 
-class Program
+public class Program
 {
     // VARIABLES
     public static int[,] sudokuBoard = new int[9, 9] { { 6, 0, 0, 3, 0, 5, 8, 7, 0 },
@@ -16,7 +16,7 @@ class Program
     static void Main(string[] args)
     {
            
-        Console.WriteLine("UNSOLVES SUDOKU\n");
+        Console.WriteLine("UNSOLVED SUDOKU\n");
         Program.printBoard(sudokuBoard);
         Console.WriteLine("\nSOLUTION\n");
         if(solver())
@@ -53,6 +53,7 @@ class Program
         }
         return position;
     }
+
     static void printBoard(int[,] sudokuBoard){
         Console.WriteLine("-------------------------------------------------------");
         for(int i =0; i<9; i++){
@@ -122,7 +123,7 @@ class Program
 
     public static bool solver()
     {
-        int[] first_empty_cell = findsEmptyCell(sudokuBoard);
+        int[] first_empty_cell = Program.findsEmptyCell(sudokuBoard);
 
         if(first_empty_cell[0] == -1)
         {
