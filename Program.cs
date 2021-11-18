@@ -3,7 +3,7 @@
 class Program
 {
     // VARIABLES
-    public int[,] sudokuBoard = new int[9, 9] { { 6, 0, 0, 3, 0, 5, 8, 7, 0 },
+    public static int[,] sudokuBoard = new int[9, 9] { { 6, 0, 0, 3, 0, 5, 8, 7, 0 },
                                                  { 0, 8, 0, 0, 2, 0, 0, 0, 0 },
                                                  { 0, 0, 7, 8, 9, 0, 0, 5, 6 },
                                                  { 0, 6, 0, 0, 7, 0, 1, 0, 0 },
@@ -11,42 +11,39 @@ class Program
                                                  { 9, 0, 1, 0, 3, 0, 7, 6, 4 },
                                                  { 0, 0, 0, 0, 0, 3, 0, 0, 7 },
                                                  { 2, 3, 0, 6, 0, 0, 9, 0, 0 },
-                                                 { 7, 1, 0, 0, 5, 4, 0, 0, 3 }};    
-    public int [,] sudokuBoard2 = new int[9, 9] { { 6, 3, 1, 4, 7, 5, 9, 8, 2 },
-                                                 { 4, 8, 7, 9, 2, 3, 5, 6, 1 },
-                                                 { 5, 9, 2, 1, 8, 6, 3, 7, 4 },
-                                                 { 3, 1, 9, 8, 5, 4, 6, 2, 7 },
-                                                 { 2, 6, 8, 7, 3, 9, 4, 1, 5 },
-                                                 { 7, 4, 5, 2, 6, 1, 8, 9, 3 },
-                                                 { 1, 2, 4, 5, 9, 8, 7, 3, 6},
-                                                 { 9, 7, 6, 3, 4, 2, 1, 5, 8 },
-                                                 { 8, 5, 3, 6, 1, 7, 2, 4, 9 }};
+                                                 { 7, 1, 0, 0, 5, 4, 0, 0, 3 }};   
         
     static void Main(string[] args)
     {
-        Program board = new Program();
-            
-        Program.printBoard(board.sudokuBoard);
-        Console.WriteLine(Program.validAnswer(8, 1, 2, board.sudokuBoard2));
-        
-        
+           
+        Console.WriteLine("UNSOLVES SUDOKU\n");
+        Program.printBoard(sudokuBoard);
+        Console.WriteLine("\nSOLUTION\n");
+        if(solver())
+        {
+            Program.printBoard(sudokuBoard);
+        }
+        else 
+        {
+            Console.WriteLine("There are no solutions to the Sudoku");
+        }
 
     }
 
-    static void printBoard(int[,] sudokuBoard){
-        Console.WriteLine("-------------------------------------------------------");
-        for(int i =0; i<9; i++){
-            Console.WriteLine("|{0, -5}|{1, -5}|{2, -5}|{3, -5}|{4, -5}|{5, -5}|{6, -5}|{7, -5}|{8, -5}|", sudokuBoard[i,0], sudokuBoard[i, 1], sudokuBoard[i, 2], sudokuBoard[i, 3], sudokuBoard[i, 4], sudokuBoard[i, 5], sudokuBoard[i, 6], sudokuBoard[i, 7], sudokuBoard[i, 8]);
-            Console.WriteLine("-------------------------------------------------------");
-        }          
-    }
-
+    // METHODS
     public static int[] findsEmptyCell(int[,] sudokuBoard){
+        /// <summary>
+        /// Checkks a sudoku board for the first cell equal to zero.
+        /// </summary>
+        /// <param name="sudokuBoard">A 9x9 matrix representing a sudoku board</param>
+        /// <returns>An array with the position of the first 0 cell. If no cells equal 0 it returns an array equal to {-1, -1}</returns>
+        
         int[] position = {-1, -1};
         // Loops through all the rows
         for(int i = 0; i<9; i++){
             // Loops through all the columns
             for(int j =0; j<9 ; j++){
+                // Checks to see if a cell is equal to 0
                 if (sudokuBoard[i, j] == 0){
                     position[0] = i;
                     position[1] = j;
@@ -56,6 +53,15 @@ class Program
         }
         return position;
     }
+    static void printBoard(int[,] sudokuBoard){
+        Console.WriteLine("-------------------------------------------------------");
+        for(int i =0; i<9; i++){
+            Console.WriteLine("|{0, -5}|{1, -5}|{2, -5}|{3, -5}|{4, -5}|{5, -5}|{6, -5}|{7, -5}|{8, -5}|", sudokuBoard[i,0], sudokuBoard[i, 1], sudokuBoard[i, 2], sudokuBoard[i, 3], sudokuBoard[i, 4], sudokuBoard[i, 5], sudokuBoard[i, 6], sudokuBoard[i, 7], sudokuBoard[i, 8]);
+            Console.WriteLine("-------------------------------------------------------");
+        }          
+    }
+
+
 
     public static bool validAnswer(int answer, int row, int col, int[,] sudokuBoard)
     {
@@ -112,5 +118,37 @@ class Program
         {
             return 6;
         }
+    }
+
+    public static bool solver()
+    {
+        int[] first_empty_cell = findsEmptyCell(sudokuBoard);
+
+        if(first_empty_cell[0] == -1)
+        {
+            Program.printBoard(sudokuBoard);
+            return true;
+        }
+        
+        for(int i = 1; i < 10 ; i++)
+        {
+            if(validAnswer(i, first_empty_cell[0], first_empty_cell[1], sudokuBoard))
+            {
+                sudokuBoard[first_empty_cell[0],first_empty_cell[1]] = i;
+
+                if (solver())
+                {
+                    Program.printBoard(sudokuBoard);
+                    return true;
+                } 
+                else 
+                {
+                   sudokuBoard[first_empty_cell[0],first_empty_cell[1]] = 0; 
+                }
+            }
+        }
+
+        // Returns false if nothing yields an acceptable answer
+        return false;
     }
 }
