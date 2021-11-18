@@ -3,15 +3,15 @@
 public class Program
 {
     // VARIABLES
-    public static int[,] sudokuBoard = new int[9, 9] { { 6, 0, 0, 3, 0, 5, 8, 7, 0 },
-                                                 { 0, 8, 0, 0, 2, 0, 0, 0, 0 },
-                                                 { 0, 0, 7, 8, 9, 0, 0, 5, 6 },
-                                                 { 0, 6, 0, 0, 7, 0, 1, 0, 0 },
-                                                 { 4, 0, 3, 1, 6, 2, 0, 0, 8 },
-                                                 { 9, 0, 1, 0, 3, 0, 7, 6, 4 },
-                                                 { 0, 0, 0, 0, 0, 3, 0, 0, 7 },
-                                                 { 2, 3, 0, 6, 0, 0, 9, 0, 0 },
-                                                 { 7, 1, 0, 0, 5, 4, 0, 0, 3 }};   
+        public static int[,] sudokuBoard = new int[9, 9]    { { 6, 0, 4, 0, 3, 8, 0, 0, 0 },
+                                                    { 0, 7, 0, 0, 0, 0, 5, 8, 0 },
+                                                    { 0, 0, 0, 0, 0, 0, 0, 0, 4 },
+                                                    { 7, 3, 0, 0, 0, 0, 0, 0, 5 },
+                                                    { 0, 0, 0, 0, 0, 2, 4, 0, 1 },
+                                                    { 0, 0, 8, 1, 5, 0, 0, 0, 7 },
+                                                    { 0, 9, 0, 7, 0, 0, 2, 0, 0 },
+                                                    { 0, 0, 0, 0, 6, 0, 0, 0, 0 },
+                                                    { 8, 2, 0, 0, 0, 0, 9, 4, 0 }};
         
     static void Main(string[] args)
     {
@@ -19,7 +19,7 @@ public class Program
         Console.WriteLine("UNSOLVED SUDOKU\n");
         Program.printBoard(sudokuBoard);
         Console.WriteLine("\nSOLUTION\n");
-        if(solver())
+        if(solver(sudokuBoard))
         {
             Program.printBoard(sudokuBoard);
         }
@@ -77,25 +77,24 @@ public class Program
             Console.WriteLine("-------------------------------------------------------");
         }          
     }
-    public static bool solver()
+    public static bool solver(int[,] sudokuBoard)
     {
         int[] first_empty_cell = Program.findsEmptyCell(sudokuBoard);
 
         if(first_empty_cell[0] == -1)
         {
-            Program.printBoard(sudokuBoard);
             return true;
         }
         
         for(int i = 1; i < 10 ; i++)
         {
+            bool result = validAnswer(i, first_empty_cell[0], first_empty_cell[1], sudokuBoard);
             if(validAnswer(i, first_empty_cell[0], first_empty_cell[1], sudokuBoard))
             {
                 sudokuBoard[first_empty_cell[0],first_empty_cell[1]] = i;
 
-                if (solver())
+                if (solver(sudokuBoard))
                 {
-                    Program.printBoard(sudokuBoard);
                     return true;
                 } 
                 else 
@@ -132,10 +131,9 @@ public class Program
         // Checks the 3 x 3 box
         int boxRow = getBoxCoordinate(row);
         int boxCol = getBoxCoordinate(col);
-
         for(int i = boxRow; i < (boxRow + 3); i++)
         {
-            for(int j = boxRow; j < (boxRow + 3); j++)
+            for(int j = boxCol; j < (boxCol + 3); j++)
             {
                 if(sudokuBoard[i,j] == answer)
                 {
