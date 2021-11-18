@@ -1,0 +1,3 @@
+# Sudoku Solver
+
+Sudoku solver is an algorithm that takes an array representing a sudoku and uses a backtracking algorithm to find the solution to the puzzle. The main program is in the [Program.cs](https://github.com/VictoriaBuchanan/Sudoku/blob/main/Program.cs) file while all the tests for this program are in the [ProgramTests](https://github.com/VictoriaBuchanan/Sudoku/tree/main/ProgramTests) folder.
